@@ -1,15 +1,18 @@
 # flutter_media_controller
 
-A new Flutter plugin project.
+Helps control media from Android Devices
 
 ## Getting Started
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/to/develop-plugins),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+Add the following to your project to use this
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
+~~~dart
+<service
+android:name="com.example.flutter_media_controller.MediaNotificationListener"
+android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+android:exported="false">
+<intent-filter>
+<action android:name="android.service.notification.NotificationListenerService" />
+</intent-filter>
+</service>
+~~~
