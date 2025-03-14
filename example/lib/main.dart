@@ -1,61 +1,55 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:flutter_media_controller/flutter_media_controller.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MediaInfoApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class MediaInfoApp extends StatefulWidget {
+  const MediaInfoApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<MediaInfoApp> createState() => _MediaInfoAppState();
 }
 
-class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-  final _flutterMediaControllerPlugin = FlutterMediaController();
+class _MediaInfoAppState extends State<MediaInfoApp> {
+  String title = "Unknown";
+  String artist = "Unknown";
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    fetchMediaInfo();
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion = 'Unknown';
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    // try {
-    //   platformVersion =
-    //       await _flutterMediaControllerPlugin.getPlatformVersion() ?? 'Unknown platform version';
-    // } on PlatformException {
-    //   platformVersion = 'Failed to get platform version.';
-    // }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
+  Future<void> fetchMediaInfo() async {
+    final mediaInfo = await FlutterMediaController.getCurrentMediaInfo();
+    if (mediaInfo != null) {
+      setState(() {
+        title = mediaInfo.track ?? "Unknown";
+        artist = mediaInfo.artist ?? "Unknown";
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
+        appBar: AppBar(title: const Text('Current Media Info')),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Title: $title", style: const TextStyle(fontSize: 20)),
+              Text("Artist: $artist", style: const TextStyle(fontSize: 18)),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: fetchMediaInfo,
+                child: const Text("Refresh"),
+              ),
+            ],
+          ),
         ),
       ),
     );

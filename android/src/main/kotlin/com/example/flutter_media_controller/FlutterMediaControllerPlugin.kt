@@ -119,4 +119,5 @@ class FlutterMediaControllerPlugin: FlutterPlugin, MethodChannel.MethodCallHandl
   override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
     channel.setMethodCallHandler(null)
   }
+
 }
