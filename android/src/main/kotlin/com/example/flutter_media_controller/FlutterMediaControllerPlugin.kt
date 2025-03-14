@@ -15,11 +15,21 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import java.io.ByteArrayOutputStream
+import android.content.pm.PackageManager
+//import android.content.Intent
+//import android.os.Build
+import androidx.core.content.ContextCompat
+import androidx.core.app.ActivityCompat
+import android.app.Activity
+import io.flutter.embedding.engine.plugins.activity.ActivityAware
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 
-class FlutterMediaControllerPlugin: FlutterPlugin, MethodChannel.MethodCallHandler {
+class FlutterMediaControllerPlugin: FlutterPlugin, ActivityAware, MethodChannel.MethodCallHandler {
 
+  private var activity: Activity? = null
   private lateinit var channel: MethodChannel
   private lateinit var context: Context
+  private val PERMISSION_REQUEST_CODE = 1001
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_media_controller")
@@ -118,6 +128,46 @@ class FlutterMediaControllerPlugin: FlutterPlugin, MethodChannel.MethodCallHandl
 
   override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
     channel.setMethodCallHandler(null)
+  }
+
+  override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+    activity = binding.activity
+    requestPermissions()
+  }
+
+  override fun onDetachedFromActivityForConfigChanges() {
+    activity = null
+  }
+
+  override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
+    activity = binding.activity
+  }
+
+  override fun onDetachedFromActivity() {
+    activity = null
+  }
+
+  fun requestPermissions() {
+    activity?.let { act ->
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        if (ContextCompat.checkSelfPermission(act, android.Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+          ActivityCompat.requestPermissions(
+                  act,
+                  arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                  PERMISSION_REQUEST_CODE
+          )
+        }
+      }
+      act.startActivity(Intent(android.provider.Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+    } ?: run {
+      // Log or handle the case when activity is null
+      println("Activity is null, cannot request permissions")
+    }
+  }
+
+  companion object {
+    private const val PERMISSION_REQUEST_CODE = 1001
   }
 
 }
