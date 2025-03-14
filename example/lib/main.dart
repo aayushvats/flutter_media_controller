@@ -24,12 +24,10 @@ class _MediaInfoAppState extends State<MediaInfoApp> {
 
   Future<void> fetchMediaInfo() async {
     final mediaInfo = await FlutterMediaController.getCurrentMediaInfo();
-    if (mediaInfo != null) {
       setState(() {
-        title = mediaInfo.track ?? "Unknown";
-        artist = mediaInfo.artist ?? "Unknown";
+        title = mediaInfo.track;
+        artist = mediaInfo.artist;
       });
-    }
   }
 
   @override
