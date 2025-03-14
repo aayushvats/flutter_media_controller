@@ -28,7 +28,7 @@ class FlutterMediaController {
       );
     } on PlatformException catch (e) {
       return MediaInfo(
-        track: 'Error getting track info',
+        track: 'Error ${e} getting track info',
         artist: 'Unknown artist',
         thumbnailUrl: '',
         isPlaying: false,
@@ -37,11 +37,11 @@ class FlutterMediaController {
   }
 
   static Future<void> handleAction(String action) async {
-    try {
+    // try {
       await _channel.invokeMethod('mediaAction', {'action': action});
-    } on PlatformException catch (e) {
-      print("Failed to perform media action: ${e.message}");
-    }
+    // } on PlatformException catch (e) {
+    //   print("Failed to perform media action: ${e.message}");
+    // }
   }
 
   static Future<void> togglePlayPause() async {
