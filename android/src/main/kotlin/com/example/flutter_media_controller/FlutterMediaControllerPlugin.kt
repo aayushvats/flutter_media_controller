@@ -39,6 +39,14 @@ class FlutterMediaControllerPlugin: FlutterPlugin, ActivityAware, MethodChannel.
 
   override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
     when (call.method) {
+      "requestPermissions" -> {
+        try {
+          requestPermissions()
+          result.success(true)
+        } catch (e: Exception) {
+          result.error("MEDIA_ERROR", "Failed to get media info", e.message)
+        }
+      }
       "getMediaInfo" -> {
         try {
           val mediaInfo = getCurrentMediaInfo()
@@ -132,7 +140,7 @@ class FlutterMediaControllerPlugin: FlutterPlugin, ActivityAware, MethodChannel.
 
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
     activity = binding.activity
-    requestPermissions()
+//    requestPermissions()
   }
 
   override fun onDetachedFromActivityForConfigChanges() {
