@@ -1,3 +1,3 @@
-## 1.0.1
+## 1.0.2
 
-Added additional functions for permissions
+Added proper README.md and LICENSE
