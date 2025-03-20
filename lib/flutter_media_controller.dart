@@ -15,10 +15,11 @@ class MediaInfo {
 }
 
 class FlutterMediaController {
-  static const MethodChannel _channel = MethodChannel('flutter_media_controller');
+  static const MethodChannel _channel =
+      MethodChannel('flutter_media_controller');
 
   static Future<void> requestPermissions() async {
-      await _channel.invokeMethod('requestPermissions');
+    await _channel.invokeMethod('requestPermissions');
   }
 
   static Future<MediaInfo> getCurrentMediaInfo() async {
@@ -42,7 +43,7 @@ class FlutterMediaController {
 
   static Future<void> handleAction(String action) async {
     // try {
-      await _channel.invokeMethod('mediaAction', {'action': action});
+    await _channel.invokeMethod('mediaAction', {'action': action});
     // } on PlatformException catch (e) {
     //   print("Failed to perform media action: ${e.message}");
     // }

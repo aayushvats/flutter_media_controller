@@ -8,7 +8,8 @@ abstract class FlutterMediaControllerPlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
-  static FlutterMediaControllerPlatform _instance = MethodChannelFlutterMediaController();
+  static FlutterMediaControllerPlatform _instance =
+      MethodChannelFlutterMediaController();
 
   /// The default instance of [FlutterMediaControllerPlatform] to use.
   ///
