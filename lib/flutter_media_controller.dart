@@ -17,6 +17,10 @@ class MediaInfo {
 class FlutterMediaController {
   static const MethodChannel _channel = MethodChannel('flutter_media_controller');
 
+  static Future<void> requestPermissions() async {
+      await _channel.invokeMethod('requestPermissions');
+  }
+
   static Future<MediaInfo> getCurrentMediaInfo() async {
     try {
       final result = await _channel.invokeMethod<Map>('getMediaInfo');

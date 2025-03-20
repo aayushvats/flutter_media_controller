@@ -23,6 +23,7 @@ class _MediaInfoAppState extends State<MediaInfoApp> {
   }
 
   Future<void> fetchMediaInfo() async {
+    await FlutterMediaController.requestPermissions();
     final mediaInfo = await FlutterMediaController.getCurrentMediaInfo();
       setState(() {
         title = mediaInfo.track;
