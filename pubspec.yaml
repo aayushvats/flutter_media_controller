@@ -1,6 +1,6 @@
 name: flutter_media_controller
 description: "A Flutter plugin to control media playback on Android."
-version: 1.0.2
+version: 1.0.3
 homepage: https://github.com/aayushvats/flutter_media_controller
 repository: https://github.com/aayushvats/flutter_media_controller
 environment:

@@ -1,3 +1,3 @@
-## 1.0.2
+## 1.0.3
 
-Added proper README.md and LICENSE
+Added proper MIT LICENSE
